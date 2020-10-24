@@ -1,4 +1,4 @@
-package ma.vi.regex.automata;
+package ma.vi.regex;
 
 import ma.vi.graph.DirectedEdge;
 import ma.vi.graph.DirectedGraph;
@@ -34,19 +34,14 @@ public class Automata extends DirectedGraph<State, Character> {
   /**
    * Return all distinct input symbols (except empty string) in this automata.
    */
-  public char[] symbols() {
+  public Set<Character> symbols() {
     Set<Character> symbols = new HashSet<>();
 		for (DirectedEdge<State, Character> edge: edges()) {
 			if (edge.weight() != RegEx.EMPTY_STRING) {
 				symbols.add(edge.weight());
 			}
 		}
-    int j = 0;
-    char[] c = new char[symbols.size()];
-		for (Character symbol: symbols) {
-			c[j++] = symbol;
-		}
-    return c;
+		return symbols;
   }
 
 	/**

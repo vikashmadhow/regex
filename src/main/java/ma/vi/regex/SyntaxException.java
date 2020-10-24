@@ -1,4 +1,4 @@
-package ma.vi.regex.automata;
+package ma.vi.regex;
 
 /** Thrown if a syntax error is found in a regular expression or program */
 public class SyntaxException extends RuntimeException {

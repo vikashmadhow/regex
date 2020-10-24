@@ -1,4 +1,4 @@
-package ma.vi.regex.automata;
+package ma.vi.regex;
 
 import ma.vi.graph.DirectedEdge;
 
@@ -118,8 +118,9 @@ public class RegEx {
       if (c == OP_ESCAPE) {
         if (i < exp.length() - 1) {
           char esc = exp.charAt(i + 1);
-          if (isSymbol(esc))
+          if (isSymbol(esc)) {
             throw new SyntaxException("Can't escape '" + esc + "'");
+          }
           exp.delete(i, i + 2);
           exp.insert(i, (char)(esc + ESCAPE_AREA));
         } else {
@@ -342,29 +343,30 @@ public class RegEx {
    */
   private DFA buildDFA(NFA nfa) {
     Map<Set<State>, State> stateMap = new HashMap<>();  // maps set of nfa states to particular set of dfa state
-    Stack<Set<State>> unmarked = new Stack<>();  // unmarked sets of nfa states
+    Stack<Set<State>> unmarked = new Stack<>();         // unmarked sets of nfa states
 
     // first state of DFA is the e-closure of first state in NFA
-    DFA dfa = new DFA();
     Set<State> closure = eClosure(nfa, nfa.start);
     unmarked.push(closure);
-    State x = dfa.newState();
+    State x = new State();
     stateMap.put(closure, x);
-    dfa.setStart(x);
+    State dfaStart = x;
+
+    Set<DirectedEdge<State, Character>> dfaEdges = new HashSet<>();
 
     State y;
-    char[] symbols = nfa.symbols();
+    Set<Character> symbols = nfa.symbols();
     while (!unmarked.empty()) {
-      Set<State> dfaState = unmarked.pop();
-      x = stateMap.get(dfaState);
+      Set<State> nfaState = unmarked.pop();
+      x = stateMap.get(nfaState);
 
       for (char symbol: symbols) {
-        Set<State> reachable = canReach(dfaState, symbol);
-        closure = eClosure(reachable);
+        Set<State> reachable = canReach(nfa, nfaState, symbol);
+        closure = eClosure(nfa, reachable);
 
         if (!stateMap.containsKey(closure)) {
           unmarked.push(closure);
-          y = dfa.newState();
+          y = new State();
           if (closure.contains(nfa.end())) {
             y.setGoal(true);
           }
@@ -372,6 +374,9 @@ public class RegEx {
         } else {
           y = stateMap.get(closure);
         }
+
+        DirectedEdge<State, Character> edge = new DirectedEdge<>(x, symbol, y);
+
         if (!x.hasTransition(y, symbol)) {
           x.addTransition(y, symbol);
         }

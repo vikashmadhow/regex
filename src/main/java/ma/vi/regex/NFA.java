@@ -1,11 +1,11 @@
-package ma.vi.regex.automata;
+package ma.vi.regex;
 
 import ma.vi.graph.DirectedEdge;
 
 import java.util.HashSet;
 import java.util.Set;
 
-import static ma.vi.regex.automata.RegEx.EMPTY_STRING;
+import static ma.vi.regex.RegEx.EMPTY_STRING;
 
 /**
  * a non-deterministic finite automata

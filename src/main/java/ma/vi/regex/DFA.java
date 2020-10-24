@@ -1,4 +1,4 @@
-package ma.vi.regex.automata;
+package ma.vi.regex;
 
 import ma.vi.graph.DirectedEdge;
 
@@ -16,7 +16,6 @@ public class DFA extends Automata {
    */
   public DFA(Set<DirectedEdge<State, Character>> edges, State start, State end) {
     super(edges, start);
-    this.end = end;
   }
 
 //  /**
@@ -35,9 +34,9 @@ public class DFA extends Automata {
     for (int i = 0; i < len; i++) {
       char c = s.charAt(i);
 
-      Set<DirectedEdge<State,Character>> edges = outgoing(state);
-      DirectedEdge<State,Character> edge = null;
-      for (DirectedEdge<State,Character> e: edges) {
+      Set<DirectedEdge<State, Character>> edges = outgoing(state);
+      DirectedEdge<State, Character> edge = null;
+      for (DirectedEdge<State, Character> e: edges) {
         if (e.weight() == c) {
           edge = e;
           break;
@@ -49,7 +48,9 @@ public class DFA extends Automata {
       } else {
         state = edge.endPoint2();
       }
-      if (state.isGoal() && (i == len - 1)) return true;
+      if (state.isGoal() && i == len - 1) {
+        return true;
+      }
     }
     return false;
   }

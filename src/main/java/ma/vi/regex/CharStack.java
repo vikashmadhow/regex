@@ -1,4 +1,4 @@
-package ma.vi.regex.automata;
+package ma.vi.regex;
 
 /**
  * Simple array-based character stack,
