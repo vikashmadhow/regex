@@ -12,7 +12,7 @@ public class CharStack {
   /**
    * The underlying array
    */
-  private char[] stack;
+  private final char[] stack;
 
   /**
    * top element + 1 in stack. 0 = no elements

@@ -14,8 +14,8 @@ import java.util.*;
  * @version 1.0
  */
 public class Automata extends DirectedGraph<State, Character> {
-  public Automata(Set<DirectedEdge<State, Character>> directedEdges, State start) {
-		super(directedEdges);
+  public Automata(Set<DirectedEdge<State, Character>> edges, State start) {
+		super(edges);
 		this.start = start;
 	}
 
@@ -52,5 +52,5 @@ public class Automata extends DirectedGraph<State, Character> {
 	/**
 	 * The starting state
 	 */
-	protected final State start;
+	protected State start;
 }
