@@ -24,11 +24,10 @@ public class NFA extends Automata {
    * with a transition under the supplied symbol
    * from a to b
    */
-  public NFA(char symbol) {
-    super(Set.of(new DirectedEdge<>(new State(false), symbol, new State(false))), null);
-    DirectedEdge<State, Character> edge = edges().iterator().next();
-    start = edge.endPoint1();
-    end = edge.endPoint2();
+  public static NFA of(char symbol) {
+    State start = new State(false);
+    State end = new State(true);
+    return new NFA(Set.of(new DirectedEdge<>(start, symbol, end)), start, end);
   }
 
   /**

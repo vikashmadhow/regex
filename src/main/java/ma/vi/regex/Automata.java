@@ -2,9 +2,9 @@ package ma.vi.regex;
 
 import ma.vi.graph.DirectedEdge;
 import ma.vi.graph.DirectedGraph;
-import ma.vi.graph.VertexMap;
 
-import java.util.*;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * The super class of NFA and DFA.
@@ -16,11 +16,6 @@ import java.util.*;
 public class Automata extends DirectedGraph<State, Character> {
   public Automata(Set<DirectedEdge<State, Character>> edges, State start) {
 		super(edges);
-		this.start = start;
-	}
-
-	public Automata(VertexMap<State, Character> vertexMap, State start) {
-		super(vertexMap);
 		this.start = start;
 	}
 
@@ -47,5 +42,5 @@ public class Automata extends DirectedGraph<State, Character> {
 	/**
 	 * The starting state
 	 */
-	protected State start;
+	protected final State start;
 }

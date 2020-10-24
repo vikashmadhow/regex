@@ -5,25 +5,17 @@ import ma.vi.graph.DirectedEdge;
 import java.util.Set;
 
 /**
- * A deterministic finite automata (DFA)
+ * A deterministic finite automata (DFA).
  *
  * @author Vikash Madhow
- * @version 1.0
  */
 public class DFA extends Automata {
   /**
    * creates an empty DFA
    */
-  public DFA(Set<DirectedEdge<State, Character>> edges, State start, State end) {
+  public DFA(Set<DirectedEdge<State, Character>> edges, State start) {
     super(edges, start);
   }
-
-//  /**
-//   * sets the start state of this DFA
-//   */
-//  public void setStart(State s) {
-//    start = s;
-//  }
 
   /**
    * returns true if the string is recognized by this DFA

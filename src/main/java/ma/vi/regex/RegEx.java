@@ -19,16 +19,14 @@ public class RegEx {
   public RegEx(String expression) throws SyntaxException {
     this.expression = expression;
 
-    // escape characters
-    // insert concatenation operators and convert
+    // escape characters, insert concatenation operators and convert
     // to postfix to help creation of NFA
     expression = normalize(expression);
     expression = insertConcatOp(expression);
     expression = toPostfix(expression);
 
     // build NFA and DFA
-    NFA nfa = buildNFA(expression);
-    this.dfa = buildDFA(nfa);
+    this.dfa = buildDFA(buildNFA(expression));
   }
 
   /**
@@ -198,7 +196,7 @@ public class RegEx {
    */
   private String toPostfix(String exp) throws SyntaxException {
     StringBuilder postfix = new StringBuilder();
-    CharStack stack = new CharStack(exp.length());
+    Deque<Character> stack = new ArrayDeque<>(exp.length());
 
     for (int i = 0; i < exp.length(); i++) {
       char c = exp.charAt(i);
@@ -220,15 +218,15 @@ public class RegEx {
           postfix.append(c);
         } else {
           int precedence = precedence(c);
-          while (stack.length() > 0
-              && precedence(stack.read()) >= precedence) {
+          while (stack.size() > 0
+              && precedence(stack.peek()) >= precedence) {
             postfix.append(stack.pop());
           }
           stack.push(c);
         }
       }
     }
-    while (stack.length() > 0) {
+    while (stack.size() > 0) {
       char op = stack.pop();
       if (op == OP_OPEN_PARENTHESIS) {
         throw new SyntaxException("Unmatched parenthesis");
@@ -243,7 +241,7 @@ public class RegEx {
    * of the regular expression
    */
   private NFA buildNFA(String exp) throws SyntaxException {
-    Stack<NFA> stack = new Stack<>();
+    Deque<NFA> stack = new ArrayDeque<>();
     int len = exp.length();
     for (int i = 0; i < len; i++) {
       char c = exp.charAt(i);
@@ -251,7 +249,7 @@ public class RegEx {
         if (isEscapedOperator(c)) {
           c -= ESCAPE_AREA;
         }
-        stack.push(new NFA(c));
+        stack.push(NFA.of(c));
       } else
         try {
           NFA nfa1, nfa2;
@@ -342,8 +340,8 @@ public class RegEx {
    * modified version of the subset algorithm from [Aho, Ullman]
    */
   private DFA buildDFA(NFA nfa) {
-    Map<Set<State>, State> stateMap = new HashMap<>();  // maps set of nfa states to particular set of dfa state
-    Stack<Set<State>> unmarked = new Stack<>();         // unmarked sets of nfa states
+    Map<Set<State>, State> stateMap = new HashMap<>();      // maps set of nfa states to particular set of dfa state
+    Deque<Set<State>> unmarked = new ArrayDeque<>();        // unmarked sets of nfa states
 
     // first state of DFA is the e-closure of first state in NFA
     Set<State> closure = eClosure(nfa, nfa.start);
@@ -356,7 +354,7 @@ public class RegEx {
 
     State y;
     Set<Character> symbols = nfa.symbols();
-    while (!unmarked.empty()) {
+    while (!unmarked.isEmpty()) {
       Set<State> nfaState = unmarked.pop();
       x = stateMap.get(nfaState);
 
@@ -375,14 +373,10 @@ public class RegEx {
           y = stateMap.get(closure);
         }
 
-        DirectedEdge<State, Character> edge = new DirectedEdge<>(x, symbol, y);
-
-        if (!x.hasTransition(y, symbol)) {
-          x.addTransition(y, symbol);
-        }
+        dfaEdges.add(new DirectedEdge<>(x, symbol, y));
       }
     }
-    return dfa;
+    return new DFA(dfaEdges, dfaStart);
   }
 
   /**
