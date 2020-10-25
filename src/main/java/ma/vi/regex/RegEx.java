@@ -65,14 +65,14 @@ public class RegEx {
   /**
    * Return true if the character denotes an operator
    */
-  private boolean isOperator(char op) {
-    return (op == OP_ESCAPE) ||
-        (op == OP_CLOSURE) ||
-        (op == OP_POS_CLOSURE) ||
-        (op == OP_OR) ||
-        (op == OP_CONCAT) ||
-        (op == OP_OPEN_PARENTHESIS) ||
-        (op == OP_CLOSE_PARENTHESIS);
+  private boolean isOperator(char c) {
+    return (c == OP_ESCAPE)
+        || (c == OP_CLOSURE)
+        || (c == OP_POS_CLOSURE)
+        || (c == OP_OR)
+        || (c == OP_CONCAT)
+        || (c == OP_OPEN_PARENTHESIS)
+        || (c == OP_CLOSE_PARENTHESIS);
   }
 
   private boolean isEscapedOperator(char c) {
@@ -83,8 +83,8 @@ public class RegEx {
    * Return true if the character denotes an opening or closing parenthesis
    */
   private boolean isParenthesis(char c) {
-    return (c == OP_OPEN_PARENTHESIS) ||
-        (c == OP_CLOSE_PARENTHESIS);
+    return (c == OP_OPEN_PARENTHESIS)
+        || (c == OP_CLOSE_PARENTHESIS);
   }
 
   /**
