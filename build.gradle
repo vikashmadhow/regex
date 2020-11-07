@@ -49,7 +49,7 @@ sourceSets {
 
 dependencies {
   // This dependency is exported to consumers, that is to say found on their compile classpath.
-  compile "com.vikmad:graph:0.1.4"
+  compile "com.vikmad:graph:0.2.2"
 
   // Use JUnit test framework
   testImplementation(platform('org.junit:junit-bom:5.7.0'))

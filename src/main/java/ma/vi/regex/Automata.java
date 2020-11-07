@@ -1,7 +1,7 @@
 package ma.vi.regex;
 
-import ma.vi.graph.DirectedEdge;
 import ma.vi.graph.DirectedGraph;
+import ma.vi.graph.Edge;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -14,7 +14,7 @@ import java.util.Set;
  * @version 1.0
  */
 public class Automata extends DirectedGraph<State, Character> {
-  public Automata(Set<DirectedEdge<State, Character>> edges, State start) {
+  public Automata(Set<Edge<State, Character>> edges, State start) {
 		super(edges);
 		this.start = start;
 	}
@@ -31,9 +31,9 @@ public class Automata extends DirectedGraph<State, Character> {
    */
   public Set<Character> symbols() {
     Set<Character> symbols = new HashSet<>();
-		for (DirectedEdge<State, Character> edge: edges()) {
-			if (edge.weight() != RegEx.EMPTY_STRING) {
-				symbols.add(edge.weight());
+		for (Edge<State, Character> edge: edges()) {
+			if (edge.weight != RegEx.EMPTY_STRING) {
+				symbols.add(edge.weight);
 			}
 		}
 		return symbols;

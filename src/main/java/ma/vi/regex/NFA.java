@@ -1,6 +1,6 @@
 package ma.vi.regex;
 
-import ma.vi.graph.DirectedEdge;
+import ma.vi.graph.Edge;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -14,7 +14,7 @@ import static ma.vi.regex.RegEx.EMPTY_STRING;
  * @version 1.0
  */
 public class NFA extends Automata {
-  public NFA(Set<DirectedEdge<State, Character>> edges, State start, State end) {
+  public NFA(Set<Edge<State, Character>> edges, State start, State end) {
     super(edges, start);
     this.end = end;
   }
@@ -27,7 +27,7 @@ public class NFA extends Automata {
   public static NFA of(char symbol) {
     State start = new State(false);
     State end = new State(true);
-    return new NFA(Set.of(new DirectedEdge<>(start, symbol, end)), start, end);
+    return new NFA(Set.of(new Edge<>(start, symbol, end)), start, end);
   }
 
   /**
@@ -52,11 +52,11 @@ public class NFA extends Automata {
     State a = new State(false);
     State b = new State(true);
 
-    Set<DirectedEdge<State, Character>> edges = new HashSet<>(edges());
-    edges.add(new DirectedEdge<>(a, EMPTY_STRING, start));
-    edges.add(new DirectedEdge<>(a, EMPTY_STRING, b));
-    edges.add(new DirectedEdge<>(end, EMPTY_STRING, b));
-    edges.add(new DirectedEdge<>(end, EMPTY_STRING, start));
+    Set<Edge<State, Character>> edges = new HashSet<>(edges());
+    edges.add(new Edge<>(a, EMPTY_STRING, start));
+    edges.add(new Edge<>(a, EMPTY_STRING, b));
+    edges.add(new Edge<>(end, EMPTY_STRING, b));
+    edges.add(new Edge<>(end, EMPTY_STRING, start));
 
     end.setGoal(false);
     return new NFA(edges, a, b);
@@ -77,9 +77,9 @@ public class NFA extends Automata {
    *  s1 --> NFA1 --> e1 --> s2 --> NFA2 --> e2
    */
   public NFA concat(NFA other) {
-    Set<DirectedEdge<State, Character>> edges = new HashSet<>(edges());
+    Set<Edge<State, Character>> edges = new HashSet<>(edges());
     edges.addAll(other.edges());
-    edges.add(new DirectedEdge<>(end, EMPTY_STRING, other.start));
+    edges.add(new Edge<>(end, EMPTY_STRING, other.start));
 
     end.setGoal(false);
     return new NFA(edges, start, other.end);
@@ -92,12 +92,12 @@ public class NFA extends Automata {
     State a = new State(false);
     State b = new State(true);
 
-    Set<DirectedEdge<State, Character>> edges = new HashSet<>(edges());
+    Set<Edge<State, Character>> edges = new HashSet<>(edges());
     edges.addAll(other.edges());
-    edges.add(new DirectedEdge<>(a, EMPTY_STRING, start));
-    edges.add(new DirectedEdge<>(a, EMPTY_STRING, other.start()));
-    edges.add(new DirectedEdge<>(end, EMPTY_STRING, b));
-    edges.add(new DirectedEdge<>(other.end, EMPTY_STRING, b));
+    edges.add(new Edge<>(a, EMPTY_STRING, start));
+    edges.add(new Edge<>(a, EMPTY_STRING, other.start()));
+    edges.add(new Edge<>(end, EMPTY_STRING, b));
+    edges.add(new Edge<>(other.end, EMPTY_STRING, b));
 
     end.setGoal(false);
     other.end.setGoal(false);

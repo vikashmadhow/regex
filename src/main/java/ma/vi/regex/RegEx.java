@@ -1,6 +1,6 @@
 package ma.vi.regex;
 
-import ma.vi.graph.DirectedEdge;
+import ma.vi.graph.Edge;
 
 import java.util.*;
 
@@ -297,10 +297,10 @@ public class RegEx {
    */
   private Set<State> eClosure(Automata automata, State state, Set<State> closure) {
     closure.add(state);
-    for (DirectedEdge<State,Character> edge: automata.outgoing(state)) {
-      if (edge.weight() == RegEx.EMPTY_STRING
-       && !closure.contains(edge.endPoint2())) {
-        closure.addAll(eClosure(automata, edge.endPoint2(), closure));
+    for (Edge<State,Character> edge: automata.outgoing(state)) {
+      if (edge.weight == RegEx.EMPTY_STRING
+       && !closure.contains(edge.endPoint2)) {
+        closure.addAll(eClosure(automata, edge.endPoint2, closure));
       }
     }
     return closure;
@@ -327,9 +327,9 @@ public class RegEx {
   public Set<State> canReach(Automata automata, Set<State> states, char symbol) {
     Set<State> reachable = new HashSet<>();
     for (State s: states) {
-      for (DirectedEdge<State,Character> edge: automata.outgoing((s))) {
-        if (edge.weight() == symbol)
-          reachable.add(edge.endPoint2());
+      for (Edge<State,Character> edge: automata.outgoing((s))) {
+        if (edge.weight == symbol)
+          reachable.add(edge.endPoint2);
       }
     }
     return reachable;
@@ -350,7 +350,7 @@ public class RegEx {
     stateMap.put(closure, x);
     State dfaStart = x;
 
-    Set<DirectedEdge<State, Character>> dfaEdges = new HashSet<>();
+    Set<Edge<State, Character>> dfaEdges = new HashSet<>();
 
     State y;
     Set<Character> symbols = nfa.symbols();
@@ -373,7 +373,7 @@ public class RegEx {
           y = stateMap.get(closure);
         }
 
-        dfaEdges.add(new DirectedEdge<>(x, symbol, y));
+        dfaEdges.add(new Edge<>(x, symbol, y));
       }
     }
     return new DFA(dfaEdges, dfaStart);
