@@ -382,6 +382,7 @@ public class RegEx {
   /**
    * a string representation of this regular expression
    */
+  @Override
   public String toString() {
     return expression;
   }
@@ -402,12 +403,12 @@ public class RegEx {
    * is taken to be the character with ascii code 01.
    */
   public static final char OP_CLOSURE = '*',
-      OP_POS_CLOSURE = '+',
-      OP_OR = '|',
-      OP_CONCAT = '\1',
-      OP_ESCAPE = '\\',
-      OP_OPEN_PARENTHESIS = '(',
-      OP_CLOSE_PARENTHESIS = ')';
+                           OP_POS_CLOSURE = '+',
+                           OP_OR = '|',
+                           OP_CONCAT = '\1',
+                           OP_ESCAPE = '\\',
+                           OP_OPEN_PARENTHESIS = '(',
+                           OP_CLOSE_PARENTHESIS = ')';
 
   /**
    * empty string symbol. \0 for convenience
@@ -424,6 +425,6 @@ public class RegEx {
    * operator types
    */
   public static final int PREFIX = 1,
-      INFIX = 2,
-      POSTFIX = 3;
+                          INFIX = 2,
+                          POSTFIX = 3;
 }
